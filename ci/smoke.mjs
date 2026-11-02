@@ -48,7 +48,7 @@ try {
   await drag(s.ui.points['6'].center,s.ui.points[String(tree.id)].center);
   await wait(()=>window.__mossboundGame.entities.filter(e=>e.type==='wood').reduce((n,e)=>n+e.n,0)>=3);
   s=await state();
-  await drag(s.ui.points['6'].center,[30+640*1220/900,286+480*574/650]);
+  await drag(s.ui.points['6'].center,[30+485*1220/900,286+475*574/650]);
   await wait(()=>window.__mossboundGame.entities.find(e=>e.id===6).target===0);
   await wait(()=>Object.values(window.__mossboundUI.incoming).every(n=>n===0));
   s=await state();
@@ -93,3 +93,4 @@ try {
   await writeFile('test-results/browser.log', logs.join('\n'));
   await browser?.close(); server?.kill();
 }
+
