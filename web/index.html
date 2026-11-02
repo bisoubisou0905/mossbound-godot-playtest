@@ -42,7 +42,7 @@
       document.getElementById('retry').onclick=()=>location.reload();
       window.__mossboundReady=()=>{state.ready=true;loading.hidden=true;canvas.focus();fit();};
       function fail(error){state.errors.push(String(error));status.textContent='暂时无法进入营地，请刷新或换一个浏览器重试。';loading.hidden=false;document.getElementById('retry').hidden=false;console.error(error);}
-      const config={"args":[],"canvasResizePolicy":0,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":4093588,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+      const config={"args":[],"canvasResizePolicy":0,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":4120852,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
       if(new URLSearchParams(location.search).get('qa')==='1')config.args=['--','--qa','--web-smoke'];
       const engine=new Engine(config);
       engine.startGame({canvas,canvasResizePolicy:0,onProgress:(loaded,total)=>{if(total>0){const percent=Math.min(99,Math.round(loaded/total*100));progress.value=percent;status.textContent='正在准备营地 · '+percent+'%';}},onPrintError:(...args)=>{const message=args.join(' ');console.error(message);state.errors.push(message);}}).catch(fail);
