@@ -3,30 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#e8eddf">
+  <meta name="theme-color" content="#142f29">
   <meta name="description" content="苔原小镇：自由整理棋盘，指派村民采集，自主合成与交易，活过三夜。打开即可试玩，无需登录。">
   <title>苔原小镇 · 三夜求生 · 在线试玩</title>
   <link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
 
   <style>
-    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#e8eddf;color:#506343;font-family:system-ui,"Microsoft YaHei",sans-serif}
-    body{display:flex;align-items:center;justify-content:center}#canvas{display:block;outline:none;touch-action:none;background:#e8eddf}
-    #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#e8eddf;z-index:3;text-align:center;padding:24px}#loading[hidden]{display:none}
-    .intro{width:min(380px,100%)}.tree{font-size:42px;line-height:1;margin-bottom:22px}h1{font-size:32px;font-weight:600;letter-spacing:3px;margin:0 0 13px}p{font-size:14px;line-height:1.8;margin:8px 0;color:#7d8c6c}
-    progress{width:100%;height:5px;border:0;border-radius:9px;overflow:hidden;margin:24px 0 9px;background:#d8dfc8}progress::-webkit-progress-bar{background:#d8dfc8}progress::-webkit-progress-value{background:#879c65}progress::-moz-progress-bar{background:#879c65}
-    #status{font-size:13px;min-height:24px}#retry{margin-top:18px;padding:10px 24px;border:1px solid #b8c698;border-radius:10px;background:#f7f4dc;color:#526343;cursor:pointer}#retry[hidden]{display:none}
-    #fullscreen{position:fixed;right:max(10px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));z-index:2;width:34px;height:34px;border:1px solid #acba9166;border-radius:9px;background:#f3f2dfcc;color:#7a8a62;font-size:21px;cursor:pointer;opacity:.65}#fullscreen:hover,#fullscreen:focus-visible{opacity:1}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#142f29;color:#f1dfb1;font-family:system-ui,"Microsoft YaHei",sans-serif}
+    body{display:flex;align-items:center;justify-content:center}#canvas{display:block;outline:none;touch-action:none;background:#142f29}
+    #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#142f29;z-index:3;text-align:center;padding:24px}#loading[hidden]{display:none}
+    .intro{width:min(420px,100%);padding:32px;border:2px solid #967447;border-radius:18px;background:#263e32;box-shadow:0 18px 70px #071c1ab3}.tree{font-size:42px;line-height:1;margin-bottom:22px}h1{font-size:32px;font-weight:600;letter-spacing:3px;margin:0 0 13px}p{font-size:14px;line-height:1.8;margin:8px 0;color:#c1c69a}
+    progress{width:100%;height:5px;border:0;border-radius:9px;overflow:hidden;margin:24px 0 9px;background:#122b25}progress::-webkit-progress-bar{background:#122b25}progress::-webkit-progress-value{background:#e1b45d}progress::-moz-progress-bar{background:#e1b45d}
+    #status{font-size:13px;min-height:24px}#retry{margin-top:18px;padding:10px 24px;border:1px solid #bf985d;border-radius:10px;background:#825b35;color:#f1dfb1;cursor:pointer}#retry[hidden]{display:none}
+    #fullscreen{position:fixed;right:max(10px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));z-index:2;width:34px;height:34px;border:1px solid #c9ab6677;border-radius:9px;background:#203e32dd;color:#e3cc91;font-size:21px;cursor:pointer;opacity:.65}#fullscreen:hover,#fullscreen:focus-visible{opacity:1}
   </style>
 </head>
 <body>
   <canvas id="canvas" width="1280" height="900" tabindex="0" aria-label="苔原小镇游戏棋盘。拖动阿苔到树旁开始采集。"></canvas>
   <button id="fullscreen" aria-label="切换全屏" title="全屏试玩">⛶</button>
   <section id="loading" role="status" aria-live="polite"><div class="intro">
-    <div class="tree" aria-hidden="true">♧</div><h1>苔原小镇</h1>
+    <div class="tree" aria-hidden="true">❧</div><h1>苔原小镇</h1>
     <p>自由整理 · 采集建造 · 守过三夜</p>
     <progress id="progress" max="100" value="0"></progress>
-    <div id="status">正在准备营地…</div>
+    <div id="status">正在点亮营火…</div>
     <p>首次加载需要下载游戏资源<br>进度保存在当前浏览器</p>
     <p><a href="credits.html" target="_blank" rel="noopener" style="color:inherit;font-size:12px">开源组件鸣谢</a></p>
     <button id="retry" hidden>重新加载</button>
@@ -42,7 +42,7 @@
       document.getElementById('retry').onclick=()=>location.reload();
       window.__mossboundReady=()=>{state.ready=true;loading.hidden=true;canvas.focus();fit();};
       function fail(error){state.errors.push(String(error));status.textContent='暂时无法进入营地，请刷新或换一个浏览器重试。';loading.hidden=false;document.getElementById('retry').hidden=false;console.error(error);}
-      const config={"args":[],"canvasResizePolicy":0,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":6231156,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+      const config={"args":[],"canvasResizePolicy":0,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":16398240,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
       if(new URLSearchParams(location.search).get('qa')==='1')config.args=['--','--qa','--web-smoke'];
       const engine=new Engine(config);
       engine.startGame({canvas,canvasResizePolicy:0,onProgress:(loaded,total)=>{if(total>0){const percent=Math.min(99,Math.round(loaded/total*100));progress.value=percent;status.textContent='正在准备营地 · '+percent+'%';}},onPrintError:(...args)=>{const message=args.join(' ');console.error(message);state.errors.push(message);}}).catch(fail);
