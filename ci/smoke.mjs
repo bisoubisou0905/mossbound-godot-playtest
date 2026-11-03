@@ -38,7 +38,7 @@ try {
   assert.equal(s.ui.font_has_chinese, true);
   assert.equal(s.game.entities.filter(e=>e.type==='pack').length,1);
   await page.screenshot({path:'test-results/01-start.png'});
-  for(let i=0;i<4;i++){
+  for(let i=0;i<6;i++){
     s=await state(); await click(s.ui.points['1'].center);
     await page.waitForTimeout(1100);
   }
@@ -74,6 +74,27 @@ try {
   s=await state();assert.equal(s.game.done,0);
   assert.deepEqual(await page.evaluate(()=>window.__mossbound.errors.filter(e=>/SCRIPT ERROR|Parse Error|ERROR:/.test(e))),[]);
   console.log('PASS: starter reveals, finite harvesting, direct material combination, automatic recipe matching, required villager manufacture, technology progression without orders');
+  // A separate ordinary-input economy/food scenario starts without save data.
+  await page.goto(`${base}?qa=1`);
+  await wait(()=>window.__mossbound?.ready && window.__mossboundUI);
+  s=await state();
+  const coins=s.game.entities.find(e=>e.type==='gold');
+  await drag(s.ui.points[String(coins.id)].top,s.ui.offers.forage);
+  await wait(()=>window.__mossboundGame.entities.filter(e=>e.type==='gold').reduce((n,e)=>n+e.n,0)===4);
+  assert.equal((await state()).game.coins,0);
+  await page.screenshot({path:'test-results/06-physical-payment.png'});
+  for(let i=0;i<6;i++){
+    s=await state();await click(s.ui.points['1'].center);await page.waitForTimeout(1100);
+  }
+  await wait(()=>Object.values(window.__mossboundUI.incoming).every(n=>n===0));
+  s=await state();
+  const food=s.game.entities.find(e=>e.type==='berries');
+  await drag(s.ui.points[String(food.id)].top,s.ui.points['6'].center);
+  await wait(()=>window.__mossboundGame.satiety===3);
+  await page.screenshot({path:'test-results/07-feeding.png'});
+  assert.equal((await state()).game.entities.filter(e=>e.type==='berries').length,0);
+  assert.deepEqual(await page.evaluate(()=>window.__mossbound.errors.filter(e=>/SCRIPT ERROR|Parse Error|ERROR:/.test(e))),[]);
+  console.log('PASS: physical coin payment with exact change, starter food, real drag feeding');
   await page.close();
   page = await browser.newPage({ viewport: { width: 844, height: 390 }, hasTouch: true });
   await page.goto(base);
